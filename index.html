@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- VoxelWorld Zero: original practice voxel sandbox build. Public-safe naming pass applied. -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Minecraft Classic 3D - Ultimate Voxel Sandbox</title>
+    <title>VoxelWorld Zero - 2030 Practice Voxel Sandbox</title>
     <!-- Tailwind CSS for modern HUD layout -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- FontAwesome for classic icons -->
+    <!-- FontAwesome for retro icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts for authentic pixel font -->
+    <!-- Google Fonts for retro pixel font -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         body, html {
@@ -33,7 +34,7 @@
             left: 0;
             z-index: 10;
         }
-        /* Classic Crosshair */
+        /* Voxel crosshair */
         #crosshair {
             position: absolute;
             top: 50%;
@@ -98,8 +99,8 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
         }
         
-        /* Authentic Hotbar Slots Container */
-        #minecraft-hotbar {
+        /* VoxelWorld hotbar slots container */
+        #voxelworld-hotbar {
             background: #8f8f8f;
             border-top: 4px solid #3c3c3c;
             border-left: 4px solid #3c3c3c;
@@ -122,7 +123,7 @@
             cursor: pointer;
             position: relative;
         }
-        /* Classic selected slot wrap */
+        /* Selected slot wrap */
         .quick-slot.selected {
             background: #8f8f8f;
             border: 4px solid #ffffff;
@@ -137,7 +138,7 @@
             image-rendering: pixelated;
         }
         /* Pixel Fonts */
-        .mc-font {
+        .voxel-font {
             font-family: 'Press Start 2P', monospace;
         }
         /* Animated splash text */
@@ -149,7 +150,7 @@
             animation: splash-bounce 0.5s infinite alternate;
             text-shadow: 2px 2px 0px #3f3f00;
         }
-        /* Classic Dirt texture menu background */
+        /* Retro terrain-pattern menu background */
         .bg-dirt-pattern {
             background-color: #573d26;
             background-image: repeating-linear-gradient(45deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 4px, transparent 4px, transparent 8px),
@@ -157,8 +158,8 @@
             background-size: 32px 32px;
             image-rendering: pixelated;
         }
-        /* Classic Minecraft Buttons */
-        .mc-button {
+        /* Retro voxel buttons */
+        .voxel-button {
             font-family: 'Press Start 2P', monospace;
             background-color: #9e9e9e;
             border-top: 3px solid #e0e0e0;
@@ -169,14 +170,14 @@
             box-shadow: inset 0 0 0 2px #000000, 0 4px 0px #000000;
             transition: all 0.1s;
         }
-        .mc-button:hover {
+        .voxel-button:hover {
             background-color: #a3c483;
             border-top: 3px solid #ccebb0;
             border-left: 3px solid #ccebb0;
             border-bottom: 3px solid #5e7a46;
             border-right: 3px solid #5e7a46;
         }
-        .mc-button:active {
+        .voxel-button:active {
             transform: translateY(2px);
             box-shadow: inset 0 0 0 2px #000000, 0 2px 0px #000000;
         }
@@ -288,22 +289,23 @@
             
             <!-- Game Title -->
             <div class="relative py-4 mb-4 border-b border-neutral-700">
-                <div class="text-[9px] text-green-400 mc-font tracking-widest mb-1">STABLE BUILD v1.6</div>
-                <h1 class="mc-font text-xl sm:text-2xl font-bold tracking-widest text-neutral-200 drop-shadow-[0_4px_0px_rgba(0,0,0,0.9)] select-none">
-                    MINECRAFT<span class="text-green-500">CLASSIC</span>
+                <div class="text-[9px] text-green-400 voxel-font tracking-widest mb-1">STABLE BUILD v1.6</div>
+                <h1 class="voxel-font text-xl sm:text-2xl font-bold tracking-widest text-neutral-200 drop-shadow-[0_4px_0px_rgba(0,0,0,0.9)] select-none">
+                    VOXELWORLD<span class="text-cyan-400">ZERO</span>
                 </h1>
                 <!-- Bouncing Splash Text -->
-                <div class="absolute -right-4 bottom-2 splash-text text-yellow-300 mc-font text-[8px] sm:text-[10px] select-none pointer-events-none">
+                <div class="absolute -right-4 bottom-2 splash-text text-yellow-300 voxel-font text-[8px] sm:text-[10px] select-none pointer-events-none">
                     AMAZING 3D GRAPHICS!
                 </div>
             </div>
 
-            <p class="text-neutral-400 text-[9px] mb-6 mc-font">Endless Terrain Chunks • Real-Time AI Animals • Block Drops • Swimming</p>
+            <p class="text-neutral-400 text-[9px] mb-6 voxel-font">Original Voxel Terrain • Practice Tech Tools • Block Drops • Swimming</p>
+            <p class="text-cyan-300 text-[8px] mb-5 voxel-font leading-relaxed">Original practice voxel sandbox. No official game assets used.</p>
             
             <!-- Instructions Panel -->
             <div class="bg-black/60 p-4 rounded border-2 border-neutral-700 text-left mb-6 space-y-3">
-                <p class="font-bold text-green-400 text-xs mc-font"><i class="fa-solid fa-compass mr-2"></i>CONTROLS TELEMETRY:</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[9px] mc-font text-neutral-300 leading-relaxed">
+                <p class="font-bold text-green-400 text-xs voxel-font"><i class="fa-solid fa-compass mr-2"></i>CONTROLS TELEMETRY:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[9px] voxel-font text-neutral-300 leading-relaxed">
                     <div><span class="text-green-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-700">W A S D</span> Walk Around</div>
                     <div><span class="text-green-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-700">Space</span> Jump / Swim Up</div>
                     <div><span class="text-green-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-700">L-Shift</span> Sink / Swim Down</div>
@@ -311,19 +313,19 @@
                     <div><span class="text-green-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-700">Right-Click</span> Place Block</div>
                     <div><span class="text-green-400 bg-neutral-900 px-1.5 py-0.5 rounded border border-neutral-700">1 - 9 Keys</span> Select Slots</div>
                 </div>
-                <div class="text-[8px] mc-font text-yellow-300 pt-2 border-t border-neutral-800 mt-2 flex items-center gap-1">
+                <div class="text-[8px] voxel-font text-yellow-300 pt-2 border-t border-neutral-800 mt-2 flex items-center gap-1">
                     <i class="fa-solid fa-sheep"></i> Gather block drops from the landscape! Friendly sheep and cows roam nearby.
                 </div>
             </div>
 
-            <button id="btn-start" class="w-full mc-button text-white text-xs sm:text-sm py-4 px-6 rounded uppercase tracking-wide">
-                Generate Classic World
+            <button id="btn-start" class="w-full voxel-button text-white text-xs sm:text-sm py-4 px-6 rounded uppercase tracking-wide">
+                Generate VoxelWorld Zero
             </button>
         </div>
     </div>
 
     <!-- HUD Overlay -->
-    <div id="game-hud" class="absolute top-4 left-4 z-20 pointer-events-none text-white mc-font text-[9px] space-y-2">
+    <div id="game-hud" class="absolute top-4 left-4 z-20 pointer-events-none text-white voxel-font text-[9px] space-y-2">
         <div class="bg-black/50 px-3 py-1.5 rounded backdrop-blur-sm border border-neutral-700 text-neutral-300">
             FPS: <span id="fps-display" class="text-green-400">60</span>
         </div>
@@ -345,7 +347,7 @@
     </div>
 
     <!-- Right Side Tutorial -->
-    <div id="instruction-hud" class="absolute top-4 right-4 z-20 bg-black/50 text-neutral-200 px-4 py-2 rounded mc-font text-[8px] border border-neutral-700 pointer-events-none max-w-xs text-right hidden sm:block">
+    <div id="instruction-hud" class="absolute top-4 right-4 z-20 bg-black/50 text-neutral-200 px-4 py-2 rounded voxel-font text-[8px] border border-neutral-700 pointer-events-none max-w-xs text-right hidden sm:block">
         <p><i class="fa-solid fa-mouse mr-1"></i> CLICK SCREEN TO CAPTURE GAZE</p>
     </div>
 
@@ -354,7 +356,7 @@
         
         <!-- Status Row: Health, Oxygen bubbles, Hunger -->
         <div class="flex justify-between w-[320px] md:w-[410px] px-2 select-none items-center">
-            <!-- Classic Hearts -->
+            <!-- Health hearts -->
             <div class="flex gap-0.5 drop-shadow-[0_2px_0px_rgba(0,0,0,0.8)]">
                 <span class="heart-icon"></span>
                 <span class="heart-icon"></span>
@@ -392,8 +394,8 @@
             </div>
         </div>
 
-        <!-- Classic Inset Styled Hotbar -->
-        <div id="minecraft-hotbar" class="pointer-events-auto flex gap-1 rounded-sm shadow-2xl backdrop-blur-sm">
+        <!-- Inset styled hotbar -->
+        <div id="voxelworld-hotbar" class="pointer-events-auto flex gap-1 rounded-sm shadow-2xl backdrop-blur-sm">
             <div class="quick-slot selected" data-block-id="1">
                 <canvas id="slot-icon-1"></canvas>
             </div>
@@ -481,7 +483,7 @@
 
                 // Pitching sounds dynamically per material category
                 let baseFreq = 180;
-                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.DIAMOND) {
+                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.CRYSTAL) {
                     baseFreq = 300; // Sharper rock strike
                 } else if (blockType === BLOCK_TYPES.SAND) {
                     baseFreq = 110; // Soft crunch
@@ -516,7 +518,7 @@
                 osc.type = 'triangle';
                 
                 let baseFreq = 130;
-                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.DIAMOND) baseFreq = 190;
+                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.CRYSTAL) baseFreq = 190;
                 if (blockType === BLOCK_TYPES.SAND) baseFreq = 95;
 
                 osc.frequency.setValueAtTime(baseFreq, now);
@@ -565,7 +567,7 @@
                 osc.type = 'sine';
                 
                 let baseFreq = 60;
-                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.DIAMOND) baseFreq = 85;
+                if (blockType === BLOCK_TYPES.STONE || blockType === BLOCK_TYPES.CRYSTAL) baseFreq = 85;
                 if (blockType === BLOCK_TYPES.SAND) baseFreq = 45;
 
                 osc.frequency.setValueAtTime(baseFreq, now);
@@ -710,10 +712,10 @@
             BRICK: 7,
             SAND: 8,
             GLASS: 9,
-            DIAMOND: 10
+            CRYSTAL: 10
         };
 
-        // Custom pixel textures for all classic blocks
+        // Custom pixel textures for all voxel blocks
         function createPixelTexture(blockType) {
             const canvas = document.createElement('canvas');
             canvas.width = 16;
@@ -727,7 +729,7 @@
                     ctx.fillStyle = Math.random() > 0.5 ? '#573d2a' : '#9c7353';
                     ctx.fillRect(Math.floor(Math.random() * 16), Math.floor(Math.random() * 11) + 5, 1, 1);
                 }
-                ctx.fillStyle = '#5c8f32'; // Classic green fringe
+                ctx.fillStyle = '#5c8f32'; // Green fringe
                 ctx.fillRect(0, 0, 16, 4);
                 for (let x = 0; x < 16; x++) {
                     const depth = 4 + Math.floor(Math.sin(x * 1.5) * 1.5 + Math.cos(x) * 0.8);
@@ -774,7 +776,7 @@
                     ctx.fillRect(Math.floor(Math.random() * 16), Math.floor(Math.random() * 16), 1, 1);
                 }
             } else if (blockType === BLOCK_TYPES.PLANKS) {
-                ctx.fillStyle = '#b58f55'; // Wood plank panels
+                ctx.fillStyle = '#b58f55'; // Wood panel pattern
                 ctx.fillRect(0, 0, 16, 16);
                 ctx.fillStyle = '#8c663a'; // Seams
                 ctx.fillRect(0, 0, 16, 1);
@@ -814,7 +816,7 @@
                 ctx.fillRect(0, 15, 16, 1);
                 ctx.fillRect(3, 3, 2, 1);
                 ctx.fillRect(11, 11, 3, 1);
-            } else if (blockType === BLOCK_TYPES.DIAMOND) {
+            } else if (blockType === BLOCK_TYPES.CRYSTAL) {
                 ctx.fillStyle = '#737373'; // Stone base
                 ctx.fillRect(0, 0, 16, 16);
                 for (let i = 0; i < 30; i++) {
@@ -935,7 +937,7 @@
             const brickMat = createPixelTexture(BLOCK_TYPES.BRICK);
             const sandMat = createPixelTexture(BLOCK_TYPES.SAND);
             const glassMat = createPixelTexture(BLOCK_TYPES.GLASS);
-            const diamondMat = createPixelTexture(BLOCK_TYPES.DIAMOND);
+            const crystalMat = createPixelTexture(BLOCK_TYPES.CRYSTAL);
 
             blockMaterials[BLOCK_TYPES.GRASS] = [
                 new THREE.MeshLambertMaterial({ map: grassSide }),
@@ -963,7 +965,7 @@
             blockMaterials[BLOCK_TYPES.BRICK] = uniformMaterial(brickMat);
             blockMaterials[BLOCK_TYPES.SAND] = uniformMaterial(sandMat);
             blockMaterials[BLOCK_TYPES.GLASS] = uniformMaterial(glassMat, true);
-            blockMaterials[BLOCK_TYPES.DIAMOND] = uniformMaterial(diamondMat);
+            blockMaterials[BLOCK_TYPES.CRYSTAL] = uniformMaterial(crystalMat);
         }
 
         // --- 2D & 3D NOISE TERRAIN ENGINE ---
@@ -1038,7 +1040,7 @@
             }
 
             buildMesh() {
-                // Classic blocky animal geometries
+                // Blocky animal geometries
                 const baseColor = this.type === 'sheep' ? 0xf0f0f0 : 0x5a3d28; // White or Brown
                 const bodyMat = new THREE.MeshLambertMaterial({ color: baseColor });
                 const legMat = new THREE.MeshLambertMaterial({ color: this.type === 'sheep' ? 0xdfcfc0 : 0x3d2719 });
@@ -1108,7 +1110,7 @@
                     this.wanderTimer = 4 + Math.random() * 6;
                     this.rotAngle = Math.random() * Math.PI * 2;
                     
-                    // Peaceful organic classic animal sounds
+                    // Peaceful organic animal sounds
                     if (Math.random() < 0.2) audio.playMobNoise(this.type);
                 }
 
@@ -1321,7 +1323,7 @@
                 opacity: 0.85
             });
 
-            // Minecraft flat blocky clouds array floating at Y = 30
+            // Flat blocky clouds array floating at Y = 30
             for (let i = 0; i < 20; i++) {
                 const cw = 16 + Math.floor(Math.random() * 16);
                 const cl = 16 + Math.floor(Math.random() * 16);
@@ -1348,14 +1350,14 @@
             }
         }
 
-        // Handheld Steve Arm and the angled block model
+        // Handheld builder arm and the angled block model
         function setupPlayerHand() {
             handGroup = new THREE.Group();
 
-            // 1. Draw Steve's Arm (Blue Sleeve with Skin cuffs)
+            // 1. Draw the builder arm (tech sleeve with skin cuffs)
             const armGeom = new THREE.BoxGeometry(0.1, 0.1, 0.35);
-            const sleeveMat = new THREE.MeshLambertMaterial({ color: 0x00a0b0 }); // Classic Steve Teal
-            const skinMat = new THREE.MeshLambertMaterial({ color: 0xdfcfc0 }); // Steve Skin color
+            const sleeveMat = new THREE.MeshLambertMaterial({ color: 0x00a0b0 }); // Builder sleeve teal
+            const skinMat = new THREE.MeshLambertMaterial({ color: 0xdfcfc0 }); // Builder skin colour
             
             // Multi-material mapping for sleeve/hand look
             armMesh = new THREE.Mesh(armGeom, [
@@ -1536,9 +1538,9 @@
                             blockType = y <= 4 ? BLOCK_TYPES.SAND : BLOCK_TYPES.DIRT;
                         }
 
-                        // Diamond Ore veins inside deep stone
+                        // Crystal Ore veins inside deep stone
                         if (blockType === BLOCK_TYPES.STONE && y <= 3 && Math.random() < 0.015) {
-                            blockType = BLOCK_TYPES.DIAMOND;
+                            blockType = BLOCK_TYPES.CRYSTAL;
                         }
 
                         blocks[blockKey] = blockType;
@@ -2493,7 +2495,7 @@
             Digit7: BLOCK_TYPES.BRICK,
             Digit8: BLOCK_TYPES.SAND,
             Digit9: BLOCK_TYPES.GLASS,
-            Digit0: BLOCK_TYPES.DIAMOND,
+            Digit0: BLOCK_TYPES.CRYSTAL,
             KeyQ: BLOCK_TYPES.GOLD,
             KeyE: BLOCK_TYPES.LAVA_CORE,
             KeyR: BLOCK_TYPES.EMERALD,
@@ -2576,7 +2578,7 @@
                 ctx.fillStyle = 'rgba(150,220,255,0.25)'; ctx.fillRect(0, 0, 16, 16);
                 ctx.strokeStyle = 'rgba(255,255,255,0.9)'; ctx.strokeRect(1, 1, 14, 14);
                 ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.beginPath(); ctx.moveTo(4, 13); ctx.lineTo(13, 4); ctx.stroke();
-            } else if (blockType === BLOCK_TYPES.DIAMOND) {
+            } else if (blockType === BLOCK_TYPES.CRYSTAL) {
                 fillNoise('#6f7070', '#555', '#8d8d8d', 45);
                 for (let i = 0; i < 9; i++) { ctx.fillStyle = Math.random() > 0.45 ? '#46e7e7' : '#d6ffff'; ctx.fillRect(1 + Math.floor(Math.random()*13), 1 + Math.floor(Math.random()*13), 2, 2); }
             } else if (blockType === BLOCK_TYPES.GOLD) {
@@ -2633,7 +2635,7 @@
         };
 
         function vwzEnsureExtraHotbarSlots() {
-            const hotbar = document.getElementById('minecraft-hotbar');
+            const hotbar = document.getElementById('voxelworld-hotbar');
             if (!hotbar || document.getElementById('slot-icon-11')) return;
             const extra = [
                 { id: 10, label: '0' },
@@ -3150,7 +3152,7 @@
             for (let y = safeY - 2; y <= safeY + 3; y++) {
                 setBlock(x - 1, y, z, BLOCK_TYPES.ROOF_TILE || BLOCK_TYPES.PLANKS);
             }
-            setBlock(x - 1, safeY + 4, z, BLOCK_TYPES.GOLD || BLOCK_TYPES.DIAMOND);
+            setBlock(x - 1, safeY + 4, z, BLOCK_TYPES.GOLD || BLOCK_TYPES.CRYSTAL);
 
             vwzTeleportPlayerTo(x, safeY, z, 'Surface lift used');
             updateBlockHUD();
@@ -3483,7 +3485,7 @@
         };
 
         function vwz2030AddHotbarSlots() {
-            const hotbar = document.getElementById('minecraft-hotbar');
+            const hotbar = document.getElementById('voxelworld-hotbar');
             if (!hotbar || document.getElementById('slot-icon-16')) return;
             const extra = [
                 { id: 16, label: 'N1' },
