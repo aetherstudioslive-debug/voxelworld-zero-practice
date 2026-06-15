@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>VoxelWorld Zero - Enhanced Survival Story Sandbox</title>
+    <title>VoxelWorld Zero - Mega Survival Expansion V3.0</title>
+    <meta name="description" content="VoxelWorld Zero V3.0 combines updates 8 to 14: day and night survival, missions, polish, weather, underground signals, building tools, and stronger world saving. No official game assets used.">
     <!-- Tailwind CSS for modern HUD layout -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Three.js Library -->
@@ -289,17 +290,17 @@
             
             <!-- Game Title -->
             <div class="relative py-4 mb-4 border-b border-neutral-700">
-                <div class="text-[9px] text-green-400 voxel-font tracking-widest mb-1">STABLE BUILD v1.6</div>
+                <div class="text-[9px] text-green-400 voxel-font tracking-widest mb-1">MAJOR BUILD V2.0</div>
                 <h1 class="voxel-font text-xl sm:text-2xl font-bold tracking-widest text-neutral-200 drop-shadow-[0_4px_0px_rgba(0,0,0,0.9)] select-none">
                     VOXELWORLD<span class="text-cyan-400">ZERO</span>
                 </h1>
                 <!-- Bouncing Splash Text -->
                 <div class="absolute -right-4 bottom-2 splash-text text-yellow-300 voxel-font text-[8px] sm:text-[10px] select-none pointer-events-none">
-                    ENHANCED VISUALS UPDATE!
+                    V2.0 CRAFT • LIFE • BASES!
                 </div>
             </div>
 
-            <p class="text-neutral-400 text-[9px] mb-6 voxel-font">Original Voxel Terrain • Enhanced Visuals • Survival Tools • 100-Hour Story</p>
+            <p class="text-neutral-400 text-[9px] mb-6 voxel-font">Original Voxel Terrain • Fabricator Crafting • World Life • Base Building</p>
             <p class="text-cyan-300 text-[8px] mb-5 voxel-font leading-relaxed">Original practice voxel sandbox. No official game assets used.</p>
             
             <!-- Instructions Panel -->
@@ -319,7 +320,7 @@
             </div>
 
             <button id="btn-start" class="w-full voxel-button text-white text-xs sm:text-sm py-4 px-6 rounded uppercase tracking-wide">
-                Enter Enhanced VoxelWorld Zero
+                Enter VoxelWorld Zero V2.0
             </button>
         </div>
     </div>
@@ -4395,16 +4396,16 @@
             vwzEnhancedLoadProgress();
             vwzEnhancedOldInit();
 
-            document.title = 'VoxelWorld Zero - Enhanced Survival Story Sandbox';
+            document.title = 'VoxelWorld Zero - Survival Sandbox V2.0';
 
             const build = document.querySelector('#menu-overlay .text-\\[9px\\]');
-            if (build) build.textContent = 'ENHANCED SURVIVAL STORY BUILD v2.5';
+            if (build) build.textContent = 'VOXELWORLD ZERO V2.0';
             const splash = document.querySelector('.splash-text');
-            if (splash) splash.textContent = 'ENHANCED VISUALS UPDATE!';
+            if (splash) splash.textContent = 'V2.0 CRAFT • LIFE • BASES!';
             const subtitle = document.querySelector('#menu-overlay p');
-            if (subtitle) subtitle.textContent = 'Original Voxel Terrain • Enhanced Visuals • Cell Crafting • 100-Hour Story';
+            if (subtitle) subtitle.textContent = 'Original Voxel Terrain • Fabricator Crafting • World Life • Base Building';
             const start = document.getElementById('btn-start');
-            if (start) start.textContent = 'Enter Enhanced VoxelWorld Zero';
+            if (start) start.textContent = 'Enter VoxelWorld Zero V2.0';
 
             vwzEnhancedScreenLayers();
             vwzEnhancedPolishScene();
@@ -4421,6 +4422,1010 @@
             if (VWZ_ENHANCED.ready && Math.random() < 0.008) vwzEnhancedUpdatePanel();
             vwzEnhancedOldAnimate();
         };
+
+
+        /* =========================================================
+           VOXELWORLD ZERO V2.0 — UPDATES 5, 6, 7
+           Update 5: Fabricator Crafting
+           Update 6: World Life / Original Cube Critters
+           Update 7: Base Building Tools
+           Full add-on layer. Same game, no sequel, no official assets.
+           ========================================================= */
+        (function() {
+            const VWZ_V20 = window.VWZ_V20 = {
+                version: 'V2.0',
+                cells: 20,
+                fabricatorOpen: false,
+                basesBuilt: 0,
+                lampsPlaced: 0,
+                crafted: 0,
+                creatures: [],
+                lastSave: 0,
+                ready: false
+            };
+
+            function v20SafeGet(key, fallback) {
+                try {
+                    const raw = localStorage.getItem(key);
+                    return raw ? JSON.parse(raw) : fallback;
+                } catch (err) { return fallback; }
+            }
+            function v20SafeSet(key, value) {
+                try { localStorage.setItem(key, JSON.stringify(value)); } catch (err) {}
+            }
+            function v20Toast(text) {
+                if (typeof vwzEnhancedToast === 'function') { vwzEnhancedToast(text); return; }
+                if (typeof vwzToast === 'function') { vwzToast(text); return; }
+                let toast = document.getElementById('vwz-v20-toast');
+                if (!toast) {
+                    toast = document.createElement('div');
+                    toast.id = 'vwz-v20-toast';
+                    toast.style.cssText = 'position:absolute;top:18%;left:50%;transform:translateX(-50%);z-index:90;background:rgba(0,0,0,.75);color:#fff;border:2px solid #67e8f9;border-radius:8px;padding:10px 12px;font-family:monospace;font-size:12px;pointer-events:none;';
+                    document.body.appendChild(toast);
+                }
+                toast.textContent = text;
+                toast.style.display = 'block';
+                clearTimeout(v20Toast.timer);
+                v20Toast.timer = setTimeout(() => toast.style.display = 'none', 1300);
+            }
+
+            function v20BlockName(id) {
+                if (typeof vwzEnhancedBlockName === 'function') return vwzEnhancedBlockName(id);
+                const names = {
+                    1:'Grass Cell',2:'Dirt Cell',3:'Stone Cell',4:'Wood Cell',5:'Leaf Cell',6:'Planks',7:'Brick',8:'Sand',9:'Glass',10:'Crystal',
+                    16:'Neon Glass',17:'AI Core',18:'Solar Panel',19:'Holo Blue',20:'Future Metal',21:'Energy Crystal',22:'Light Floor',23:'Tech Wall'
+                };
+                return names[id] || ('Cell ' + id);
+            }
+
+            function v20AddStyle() {
+                if (document.getElementById('vwz-v20-style')) return;
+                const style = document.createElement('style');
+                style.id = 'vwz-v20-style';
+                style.textContent = `
+                    .vwz-v20-panel {
+                        position: absolute;
+                        left: 14px;
+                        bottom: 118px;
+                        z-index: 45;
+                        width: 305px;
+                        background: linear-gradient(180deg, rgba(8,20,35,.86), rgba(0,0,0,.78));
+                        border: 2px solid rgba(103,232,249,.62);
+                        color: #eafcff;
+                        border-radius: 10px;
+                        padding: 10px;
+                        font-family: 'Press Start 2P', monospace;
+                        font-size: 8px;
+                        line-height: 1.75;
+                        text-shadow: 1px 1px #000;
+                        box-shadow: 0 0 22px rgba(0,200,255,.20);
+                        pointer-events: auto;
+                    }
+                    .vwz-v20-panel button {
+                        font-family: 'Press Start 2P', monospace;
+                        font-size: 7px;
+                        color: #fff;
+                        background: #1f6f83;
+                        border-top: 2px solid #a5f3fc;
+                        border-left: 2px solid #a5f3fc;
+                        border-right: 2px solid #05313a;
+                        border-bottom: 2px solid #05313a;
+                        padding: 6px 7px;
+                        margin: 2px;
+                        cursor: pointer;
+                    }
+                    .vwz-v20-panel button:hover { background:#278aa2; }
+                    .vwz-v20-fabricator {
+                        display: none;
+                        margin-top: 8px;
+                        padding-top: 8px;
+                        border-top: 1px solid rgba(103,232,249,.35);
+                    }
+                    .vwz-v20-chip {
+                        display:inline-block;
+                        padding:2px 5px;
+                        margin:2px 0;
+                        border:1px solid rgba(103,232,249,.36);
+                        background:rgba(103,232,249,.10);
+                        border-radius:4px;
+                    }
+                    .vwz-v20-base-marker {
+                        position:absolute;
+                        left:50%;
+                        top:44px;
+                        transform:translateX(-50%);
+                        z-index:44;
+                        color:#dffaff;
+                        background:rgba(0,16,24,.60);
+                        border:1px solid rgba(103,232,249,.35);
+                        border-radius:8px;
+                        padding:6px 10px;
+                        font-family:'Press Start 2P', monospace;
+                        font-size:8px;
+                        pointer-events:none;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            function v20Load() {
+                const save = v20SafeGet('vwz_v20_progress', null);
+                if (!save) return;
+                VWZ_V20.cells = typeof save.cells === 'number' ? save.cells : VWZ_V20.cells;
+                VWZ_V20.basesBuilt = save.basesBuilt || 0;
+                VWZ_V20.lampsPlaced = save.lampsPlaced || 0;
+                VWZ_V20.crafted = save.crafted || 0;
+            }
+            function v20Save() {
+                v20SafeSet('vwz_v20_progress', {
+                    cells: VWZ_V20.cells,
+                    basesBuilt: VWZ_V20.basesBuilt,
+                    lampsPlaced: VWZ_V20.lampsPlaced,
+                    crafted: VWZ_V20.crafted
+                });
+                if (typeof vwzSaveWorld === 'function') vwzSaveWorld();
+            }
+
+            function v20PanelHtml() {
+                return `
+                    <b>VOXELWORLD ZERO V2.0</b><br>
+                    <span style="color:#67e8f9">Updates 5 + 6 + 7 active</span><br>
+                    Cells: <span id="vwz-v20-cells" style="color:#a3e635">${VWZ_V20.cells}</span><br>
+                    Crafted: <span style="color:#fbbf24">${VWZ_V20.crafted}</span> • Bases: <span style="color:#fbbf24">${VWZ_V20.basesBuilt}</span><br>
+                    <span class="vwz-v20-chip">K Fabricator</span>
+                    <span class="vwz-v20-chip">P Base</span>
+                    <span class="vwz-v20-chip">L Light</span>
+                    <span class="vwz-v20-chip">N Critter</span><br>
+                    <button id="vwz-v20-toggle-fab">Fabricator</button>
+                    <button id="vwz-v20-base">Starter Base</button>
+                    <button id="vwz-v20-lamp">Light</button>
+                    <button id="vwz-v20-critter">Critter</button>
+                    <div id="vwz-v20-fabricator" class="vwz-v20-fabricator">
+                        <b>Update 5 — Fabricator</b><br>
+                        Turn collected cells into building helpers.<br>
+                        <button data-v20-craft="glass">Craft Neon Glass 4</button>
+                        <button data-v20-craft="wall">Craft Tech Wall 5</button>
+                        <button data-v20-craft="floor">Craft Light Floor 6</button>
+                        <button data-v20-craft="basekit">Craft Base Kit 12</button><br>
+                        <span style="color:#fbbf24">Update 6:</span> original cube critters now roam.<br>
+                        <span style="color:#fbbf24">Update 7:</span> instant starter base tools added.
+                    </div>
+                `;
+            }
+
+            function v20UpdatePanel() {
+                const panel = document.getElementById('vwz-v20-panel');
+                if (!panel) return;
+                panel.innerHTML = v20PanelHtml();
+                const fab = document.getElementById('vwz-v20-fabricator');
+                if (fab) fab.style.display = VWZ_V20.fabricatorOpen ? 'block' : 'none';
+                const toggle = document.getElementById('vwz-v20-toggle-fab');
+                const base = document.getElementById('vwz-v20-base');
+                const lamp = document.getElementById('vwz-v20-lamp');
+                const critter = document.getElementById('vwz-v20-critter');
+                if (toggle) toggle.onclick = (e) => { e.stopPropagation(); v20ToggleFabricator(); };
+                if (base) base.onclick = (e) => { e.stopPropagation(); v20BuildStarterBase(); };
+                if (lamp) lamp.onclick = (e) => { e.stopPropagation(); v20PlaceLight(); };
+                if (critter) critter.onclick = (e) => { e.stopPropagation(); v20SpawnCreatureNearPlayer(); };
+                document.querySelectorAll('[data-v20-craft]').forEach(btn => {
+                    btn.onclick = (e) => { e.stopPropagation(); v20Craft(btn.getAttribute('data-v20-craft')); };
+                });
+            }
+
+            function v20CreatePanel() {
+                if (document.getElementById('vwz-v20-panel')) { v20UpdatePanel(); return; }
+                const panel = document.createElement('div');
+                panel.id = 'vwz-v20-panel';
+                panel.className = 'vwz-v20-panel';
+                document.body.appendChild(panel);
+                const marker = document.createElement('div');
+                marker.id = 'vwz-v20-marker';
+                marker.className = 'vwz-v20-base-marker';
+                marker.textContent = 'V2.0: Fabricator • World Life • Base Building';
+                document.body.appendChild(marker);
+                v20UpdatePanel();
+            }
+
+            function v20ToggleFabricator(force) {
+                VWZ_V20.fabricatorOpen = typeof force === 'boolean' ? force : !VWZ_V20.fabricatorOpen;
+                v20UpdatePanel();
+                v20Toast(VWZ_V20.fabricatorOpen ? 'Fabricator open' : 'Fabricator closed');
+            }
+
+            function v20UseCells(cost) {
+                if (VWZ_V20.cells < cost) {
+                    v20Toast('Need ' + cost + ' cells. Extract more blocks.');
+                    return false;
+                }
+                VWZ_V20.cells -= cost;
+                return true;
+            }
+
+            function v20ChooseBlock(type, label) {
+                if (!type || !blockMaterials[type]) { v20Toast(label + ' is not ready yet'); return; }
+                activeBlockType = type;
+                if (typeof updateHeldBlockMaterial === 'function') updateHeldBlockMaterial();
+                if (typeof selectQuickslot === 'function') {
+                    try { selectQuickslot(type); } catch (err) {}
+                }
+                v20Toast('Selected crafted ' + (label || v20BlockName(type)));
+            }
+
+            function v20Craft(kind) {
+                const T = (typeof BLOCK_TYPES !== 'undefined') ? BLOCK_TYPES : {};
+                const recipes = {
+                    glass: { cost: 4, type: T.NEON_GLASS || T.GLASS || 9, label: 'Neon Glass' },
+                    wall: { cost: 5, type: T.TECH_WALL || T.BRICK || 7, label: 'Tech Wall' },
+                    floor: { cost: 6, type: T.LIGHT_FLOOR || T.PLANKS || 6, label: 'Light Floor' },
+                    basekit: { cost: 12, type: null, label: 'Base Kit' }
+                };
+                const recipe = recipes[kind];
+                if (!recipe || !v20UseCells(recipe.cost)) return;
+                VWZ_V20.crafted += 1;
+                if (kind === 'basekit') {
+                    v20BuildStarterBase(true);
+                    v20Toast('Base kit built');
+                } else {
+                    v20ChooseBlock(recipe.type, recipe.label);
+                }
+                v20Save();
+                v20UpdatePanel();
+            }
+
+            function v20GroundY(x, z) {
+                try { return Math.floor(terrain.getHeight(x, z)) + 1; }
+                catch (err) { return Math.floor(player.pos.y - 1); }
+            }
+
+            function v20Place(x, y, z, type) {
+                if (typeof setBlock !== 'function') return;
+                if (!type || !blockMaterials[type]) type = (BLOCK_TYPES && BLOCK_TYPES.PLANKS) || 6;
+                setBlock(Math.floor(x), Math.floor(y), Math.floor(z), type, true);
+            }
+
+            function v20BuildStarterBase(fromKit) {
+                if (!fromKit && !v20UseCells(10)) return;
+                if (typeof player === 'undefined' || typeof setBlock !== 'function') return;
+                const T = BLOCK_TYPES || {};
+                const floorType = T.LIGHT_FLOOR || T.PLANKS || 6;
+                const wallType = T.TECH_WALL || T.BRICK || 7;
+                const glassType = T.NEON_GLASS || T.GLASS || 9;
+                const roofType = T.SOLAR_PANEL || T.PLANKS || 6;
+                const cx = Math.floor(player.pos.x) + 4;
+                const cz = Math.floor(player.pos.z) + 4;
+                const y = v20GroundY(cx, cz);
+
+                for (let x = -3; x <= 3; x++) {
+                    for (let z = -3; z <= 3; z++) {
+                        v20Place(cx + x, y, cz + z, floorType);
+                        const edge = Math.abs(x) === 3 || Math.abs(z) === 3;
+                        if (edge) {
+                            for (let h = 1; h <= 3; h++) {
+                                const doorway = (z === -3 && x === 0 && h <= 2);
+                                const window = (h === 2 && (Math.abs(x) === 3 || Math.abs(z) === 3) && !doorway && (Math.abs(x + z) % 2 === 0));
+                                if (!doorway) v20Place(cx + x, y + h, cz + z, window ? glassType : wallType);
+                            }
+                        }
+                        if (Math.abs(x) <= 3 && Math.abs(z) <= 3) v20Place(cx + x, y + 4, cz + z, roofType);
+                    }
+                }
+                v20Place(cx, y + 1, cz, T.AI_CORE || T.CRYSTAL || 10);
+                v20Place(cx - 2, y + 1, cz - 2, T.LIGHT_FLOOR || T.CRYSTAL || 10);
+                v20Place(cx + 2, y + 1, cz + 2, T.LIGHT_FLOOR || T.CRYSTAL || 10);
+                updateChunks(true);
+                VWZ_V20.basesBuilt += 1;
+                v20Save();
+                v20UpdatePanel();
+                v20Toast('Starter base built and saved');
+            }
+
+            function v20PlaceLight() {
+                if (!v20UseCells(3)) return;
+                if (typeof player === 'undefined') return;
+                const T = BLOCK_TYPES || {};
+                const x = Math.floor(player.pos.x + Math.sin(player.yaw || 0) * 2);
+                const z = Math.floor(player.pos.z + Math.cos(player.yaw || 0) * 2);
+                const y = v20GroundY(x, z) + 1;
+                v20Place(x, y, z, T.LIGHT_FLOOR || T.CRYSTAL || 10);
+                if (typeof THREE !== 'undefined' && scene) {
+                    const lamp = new THREE.PointLight(0x7dd3fc, 0.85, 18);
+                    lamp.position.set(x + 0.5, y + 1.4, z + 0.5);
+                    scene.add(lamp);
+                }
+                VWZ_V20.lampsPlaced += 1;
+                updateChunks(true);
+                v20Save();
+                v20UpdatePanel();
+                v20Toast('Base light placed');
+            }
+
+            function v20SpawnCreature(x, z, type) {
+                if (typeof THREE === 'undefined' || !scene) return;
+                const group = new THREE.Group();
+                const isSprite = type === 'sprite';
+                const bodyMat = new THREE.MeshLambertMaterial({ color: isSprite ? 0x67e8f9 : 0xa3e635 });
+                const darkMat = new THREE.MeshLambertMaterial({ color: 0x0f172a });
+                const glowMat = new THREE.MeshBasicMaterial({ color: isSprite ? 0xdffaff : 0xfef08a });
+
+                const body = new THREE.Mesh(new THREE.BoxGeometry(isSprite ? .55 : .75, isSprite ? .55 : .45, isSprite ? .55 : .75), bodyMat);
+                body.position.y = .55;
+                group.add(body);
+                const face = new THREE.Mesh(new THREE.BoxGeometry(.28, .12, .04), glowMat);
+                face.position.set(0, .60, -.31);
+                group.add(face);
+                for (let i = 0; i < 4; i++) {
+                    const leg = new THREE.Mesh(new THREE.BoxGeometry(.12, .35, .12), darkMat);
+                    leg.position.set(i < 2 ? -.22 : .22, .15, i % 2 ? -.22 : .22);
+                    group.add(leg);
+                }
+                const y = v20GroundY(x, z);
+                group.position.set(x, y, z);
+                scene.add(group);
+                VWZ_V20.creatures.push({ group, type, angle: Math.random() * Math.PI * 2, timer: 1 + Math.random() * 4, bob: Math.random() * 10 });
+            }
+
+            function v20SpawnCreatureNearPlayer() {
+                if (typeof player === 'undefined') return;
+                const x = player.pos.x + (Math.random() - .5) * 10;
+                const z = player.pos.z + (Math.random() - .5) * 10;
+                v20SpawnCreature(x, z, Math.random() < .5 ? 'sprite' : 'hopper');
+                v20Toast('Original cube critter joined the world');
+            }
+
+            function v20UpdateCreatures(delta) {
+                if (!VWZ_V20.creatures.length || typeof terrain === 'undefined') return;
+                VWZ_V20.creatures.forEach(c => {
+                    c.timer -= delta;
+                    c.bob += delta * 4;
+                    if (c.timer <= 0) {
+                        c.timer = 2 + Math.random() * 5;
+                        c.angle = Math.random() * Math.PI * 2;
+                    }
+                    const speed = c.type === 'sprite' ? .9 : .55;
+                    c.group.position.x += Math.sin(c.angle) * speed * delta;
+                    c.group.position.z += Math.cos(c.angle) * speed * delta;
+                    c.group.position.y += (v20GroundY(c.group.position.x, c.group.position.z) - c.group.position.y) * .12;
+                    c.group.rotation.y = c.angle + Math.PI;
+                    c.group.children.forEach((part, i) => {
+                        if (i > 1) part.rotation.x = Math.sin(c.bob + i) * .25;
+                    });
+                    if (c.type === 'sprite') c.group.position.y += Math.sin(c.bob) * .01;
+                });
+            }
+
+            // Reward the player for extracting cells from the world.
+            const v20OldSpawnBlockPickup = (typeof spawnBlockPickup === 'function') ? spawnBlockPickup : null;
+            if (v20OldSpawnBlockPickup) {
+                spawnBlockPickup = function(x, y, z, blockType) {
+                    VWZ_V20.cells += (blockType === (BLOCK_TYPES.CRYSTAL || 10) || blockType === (BLOCK_TYPES.ENERGY_CRYSTAL || 21)) ? 3 : 1;
+                    v20Save();
+                    setTimeout(v20UpdatePanel, 0);
+                    return v20OldSpawnBlockPickup(x, y, z, blockType);
+                };
+            }
+
+            // Update the menu after all older wrappers finish.
+            const v20OldInit = init;
+            init = function() {
+                v20AddStyle();
+                v20Load();
+                v20OldInit();
+                setTimeout(() => {
+                    document.title = 'VoxelWorld Zero - Survival Sandbox V2.0';
+                    const build = document.querySelector('#menu-overlay .text-\\[9px\\]');
+                    if (build) build.textContent = 'VOXELWORLD ZERO V2.0';
+                    const splash = document.querySelector('.splash-text');
+                    if (splash) splash.textContent = 'CRAFT • LIFE • BASES!';
+                    const subtitle = document.querySelector('#menu-overlay p');
+                    if (subtitle) subtitle.textContent = 'Original Voxel Terrain • Fabricator Crafting • World Life • Base Building';
+                    const start = document.getElementById('btn-start');
+                    if (start) start.textContent = 'Enter VoxelWorld Zero V2.0';
+                    v20CreatePanel();
+                    for (let i = 0; i < 5; i++) v20SpawnCreatureNearPlayer();
+                    VWZ_V20.ready = true;
+                    v20Toast('V2.0 Updates 5, 6, 7 loaded');
+                }, 0);
+            };
+
+            const v20OldAnimate = animate;
+            animate = function() {
+                v20UpdateCreatures(0.016);
+                if (VWZ_V20.ready && performance.now() - VWZ_V20.lastSave > 30000) {
+                    VWZ_V20.lastSave = performance.now();
+                    v20Save();
+                }
+                v20OldAnimate();
+            };
+
+            window.addEventListener('keydown', (e) => {
+                const k = e.key.toLowerCase();
+                if (k === 'k') v20ToggleFabricator();
+                if (k === 'p') v20BuildStarterBase();
+                if (k === 'l') v20PlaceLight();
+                if (k === 'n') v20SpawnCreatureNearPlayer();
+            });
+        })();
+
+        // === VOXELWORLD ZERO V3.0 MEGA UPDATE: Updates 8 - 14 ===
+        // Adds day/night survival, missions, polish, weather, underground signals,
+        // building tools, and stronger save-world support to the same game.
+        (function() {
+            const VWZ_V3 = window.VWZ_V3 = {
+                version: 'V3.0',
+                weatherIndex: 0,
+                weatherTimer: 0,
+                missionIndex: 0,
+                completed: [],
+                caveScans: 0,
+                caveSignals: [],
+                towersBuilt: 0,
+                pathsBuilt: 0,
+                nightTicks: 0,
+                nightSurvived: false,
+                blocksPlaced: 0,
+                manualSaves: 0,
+                worldEdits: {},
+                undoStack: [],
+                panelOpen: true,
+                missionOpen: false,
+                helpOpen: false,
+                buildGuide: false,
+                ready: false,
+                recordEdits: true,
+                lastAutosave: 0,
+                toastTimer: null
+            };
+
+            const V3_STORE = 'vwz_v3_mega_save';
+            const V3_WEATHER = ['Clear', 'Mist', 'Rain', 'Wind', 'Storm', 'Glow Night'];
+            const V3_MISSIONS = [
+                { id: 'survive_night', name: 'Night Watch', text: 'Stay in the world through a night cycle.', tip: 'Build lights and keep exploring.' },
+                { id: 'mission_cells', name: 'Cell Gatherer', text: 'Collect at least 40 cells.', tip: 'Extract blocks and crystals.' },
+                { id: 'base_light', name: 'Light Builder', text: 'Place 3 lights.', tip: 'Use L from the V2.0 base system.' },
+                { id: 'cave_scan', name: 'Below Signal', text: 'Scan and reveal an underground signal.', tip: 'Press C near hills or caves.' },
+                { id: 'craft_master', name: 'Fabricator Test', text: 'Craft at least 2 items.', tip: 'Press K and use cells.' },
+                { id: 'watchtower', name: 'Builder Height', text: 'Build one watchtower.', tip: 'Press X to build a watchtower.' },
+                { id: 'path_builder', name: 'Trail Maker', text: 'Build 3 path strips.', tip: 'Press T to lay path blocks.' }
+            ];
+
+            function v3SafeLoad() {
+                try {
+                    const data = JSON.parse(localStorage.getItem(V3_STORE) || '{}');
+                    if (data && typeof data === 'object') {
+                        VWZ_V3.weatherIndex = Number.isFinite(data.weatherIndex) ? data.weatherIndex : VWZ_V3.weatherIndex;
+                        VWZ_V3.missionIndex = Number.isFinite(data.missionIndex) ? data.missionIndex : VWZ_V3.missionIndex;
+                        VWZ_V3.completed = Array.isArray(data.completed) ? data.completed : [];
+                        VWZ_V3.caveScans = data.caveScans || 0;
+                        VWZ_V3.towersBuilt = data.towersBuilt || 0;
+                        VWZ_V3.pathsBuilt = data.pathsBuilt || 0;
+                        VWZ_V3.nightSurvived = !!data.nightSurvived;
+                        VWZ_V3.blocksPlaced = data.blocksPlaced || 0;
+                        VWZ_V3.manualSaves = data.manualSaves || 0;
+                        VWZ_V3.worldEdits = data.worldEdits && typeof data.worldEdits === 'object' ? data.worldEdits : {};
+                    }
+                } catch (err) {
+                    console.warn('V3 save load failed', err);
+                }
+            }
+
+            function v3Save(manual = false) {
+                try {
+                    if (manual) VWZ_V3.manualSaves += 1;
+                    const save = {
+                        weatherIndex: VWZ_V3.weatherIndex,
+                        missionIndex: VWZ_V3.missionIndex,
+                        completed: VWZ_V3.completed,
+                        caveScans: VWZ_V3.caveScans,
+                        towersBuilt: VWZ_V3.towersBuilt,
+                        pathsBuilt: VWZ_V3.pathsBuilt,
+                        nightSurvived: VWZ_V3.nightSurvived,
+                        blocksPlaced: VWZ_V3.blocksPlaced,
+                        manualSaves: VWZ_V3.manualSaves,
+                        worldEdits: VWZ_V3.worldEdits
+                    };
+                    localStorage.setItem(V3_STORE, JSON.stringify(save));
+                    if (window.VWZ_V20 && typeof window.VWZ_V20 === 'object') {
+                        localStorage.setItem('vwz_v20_shadow_save', JSON.stringify({
+                            cells: window.VWZ_V20.cells || 0,
+                            crafted: window.VWZ_V20.crafted || 0,
+                            basesBuilt: window.VWZ_V20.basesBuilt || 0,
+                            lampsPlaced: window.VWZ_V20.lampsPlaced || 0
+                        }));
+                    }
+                    if (manual) v3Toast('World saved for V3.0');
+                } catch (err) {
+                    console.warn('V3 save failed', err);
+                }
+            }
+
+            function v3Cells() {
+                return (window.VWZ_V20 && typeof window.VWZ_V20.cells === 'number') ? window.VWZ_V20.cells : 0;
+            }
+
+            function v3Crafted() {
+                return (window.VWZ_V20 && typeof window.VWZ_V20.crafted === 'number') ? window.VWZ_V20.crafted : 0;
+            }
+
+            function v3Bases() {
+                return (window.VWZ_V20 && typeof window.VWZ_V20.basesBuilt === 'number') ? window.VWZ_V20.basesBuilt : 0;
+            }
+
+            function v3Lights() {
+                return (window.VWZ_V20 && typeof window.VWZ_V20.lampsPlaced === 'number') ? window.VWZ_V20.lampsPlaced : 0;
+            }
+
+            function v3AddStyle() {
+                if (document.getElementById('vwz-v3-style')) return;
+                const style = document.createElement('style');
+                style.id = 'vwz-v3-style';
+                style.textContent = `
+                    .vwz-v3-panel {
+                        position: absolute; left: 14px; bottom: 112px; z-index: 26;
+                        max-width: 315px; color: #e0f2fe; pointer-events: auto;
+                        background: linear-gradient(180deg, rgba(2,6,23,.86), rgba(15,23,42,.76));
+                        border: 2px solid rgba(56,189,248,.45); border-radius: 8px;
+                        box-shadow: 0 14px 35px rgba(0,0,0,.55), inset 0 0 20px rgba(56,189,248,.08);
+                        padding: 10px 12px; font-family: 'Press Start 2P', monospace;
+                        font-size: 8px; line-height: 1.75; text-shadow: 1px 1px 0 #000;
+                    }
+                    .vwz-v3-panel strong { color:#a3e635; }
+                    .vwz-v3-panel .hot { color:#fbbf24; }
+                    .vwz-v3-panel .sky { color:#67e8f9; }
+                    .vwz-v3-panel button {
+                        font-family: 'Press Start 2P', monospace; font-size: 7px; color:#fff;
+                        margin: 3px 2px 0 0; padding: 6px 7px; cursor:pointer;
+                        background:#0f766e; border-top:2px solid #99f6e4; border-left:2px solid #99f6e4;
+                        border-right:2px solid #042f2e; border-bottom:2px solid #042f2e;
+                    }
+                    .vwz-v3-panel button:hover { background:#0891b2; }
+                    #vwz-weather-overlay { position:absolute; inset:0; z-index:17; pointer-events:none; transition:background .6s, opacity .6s; }
+                    #vwz-weather-overlay.clear { background: transparent; opacity:0; }
+                    #vwz-weather-overlay.mist { background: radial-gradient(circle at center, rgba(255,255,255,.10), rgba(148,163,184,.22)); opacity:1; }
+                    #vwz-weather-overlay.rain { background: linear-gradient(180deg, rgba(2,6,23,.20), rgba(14,116,144,.18)); opacity:1; }
+                    #vwz-weather-overlay.wind { background: linear-gradient(90deg, rgba(255,255,255,.06), rgba(125,211,252,.16), rgba(255,255,255,.06)); opacity:1; }
+                    #vwz-weather-overlay.storm { background: radial-gradient(circle at 50% 20%, rgba(96,165,250,.16), rgba(2,6,23,.50)); opacity:1; }
+                    #vwz-weather-overlay.glow { background: radial-gradient(circle at center, rgba(168,85,247,.14), rgba(14,165,233,.10), rgba(2,6,23,.26)); opacity:1; }
+                    #vwz-rain-layer { position:absolute; inset:-120px 0 0 0; z-index:18; pointer-events:none; display:none; opacity:.55;
+                        background-image: repeating-linear-gradient(105deg, rgba(255,255,255,.0) 0 11px, rgba(191,219,254,.65) 12px 14px, rgba(255,255,255,0) 15px 28px);
+                        background-size: 130px 130px; animation: vwzRainFall .52s linear infinite; }
+                    @keyframes vwzRainFall { from { transform: translate3d(0,-100px,0); } to { transform: translate3d(-55px,20px,0); } }
+                    #vwz-v3-toast { position:absolute; top:17%; left:50%; transform:translateX(-50%); z-index:70; display:none;
+                        background:rgba(2,6,23,.86); color:#fff; border:2px solid rgba(125,211,252,.7); border-radius:6px;
+                        padding:10px 14px; font-family:'Press Start 2P', monospace; font-size:9px; text-shadow:1px 1px #000; }
+                    #vwz-v3-missions, #vwz-v3-help { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:65;
+                        width:min(620px, calc(100vw - 28px)); max-height:78vh; overflow:auto; display:none;
+                        color:#e5e7eb; background:rgba(2,6,23,.92); border:4px solid rgba(125,211,252,.65); border-radius:10px;
+                        box-shadow:0 20px 60px rgba(0,0,0,.65); padding:18px; font-family:'Press Start 2P', monospace; font-size:9px; line-height:1.8; }
+                    #vwz-v3-missions h2, #vwz-v3-help h2 { color:#67e8f9; margin:0 0 12px 0; font-size:14px; }
+                    .vwz-build-guide-on #crosshair { filter: drop-shadow(0 0 8px #67e8f9); }
+                    #vwz-build-grid { position:absolute; inset:0; z-index:19; display:none; pointer-events:none;
+                        background-image: linear-gradient(rgba(103,232,249,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(103,232,249,.10) 1px, transparent 1px);
+                        background-size: 44px 44px; mix-blend-mode: screen; }
+                    .vwz-build-guide-on #vwz-build-grid { display:block; }
+                `;
+                document.head.appendChild(style);
+            }
+
+            function v3CreateDom() {
+                if (!document.getElementById('vwz-weather-overlay')) {
+                    const weather = document.createElement('div');
+                    weather.id = 'vwz-weather-overlay';
+                    weather.className = 'clear';
+                    document.body.appendChild(weather);
+                }
+                if (!document.getElementById('vwz-rain-layer')) {
+                    const rain = document.createElement('div');
+                    rain.id = 'vwz-rain-layer';
+                    document.body.appendChild(rain);
+                }
+                if (!document.getElementById('vwz-build-grid')) {
+                    const grid = document.createElement('div');
+                    grid.id = 'vwz-build-grid';
+                    document.body.appendChild(grid);
+                }
+                if (!document.getElementById('vwz-v3-toast')) {
+                    const toast = document.createElement('div');
+                    toast.id = 'vwz-v3-toast';
+                    document.body.appendChild(toast);
+                }
+                if (!document.getElementById('vwz-v3-missions')) {
+                    const board = document.createElement('div');
+                    board.id = 'vwz-v3-missions';
+                    document.body.appendChild(board);
+                }
+                if (!document.getElementById('vwz-v3-help')) {
+                    const help = document.createElement('div');
+                    help.id = 'vwz-v3-help';
+                    help.innerHTML = `
+                        <h2>VoxelWorld Zero V3.0</h2>
+                        <div style="color:#a3e635">Updates 8 - 14 are active.</div><br>
+                        <b>J</b> Mission Board<br>
+                        <b>U</b> Cycle Weather<br>
+                        <b>C</b> Underground Signal Scan<br>
+                        <b>X</b> Build Watchtower<br>
+                        <b>T</b> Lay Path Strip<br>
+                        <b>G</b> Build Guide Grid<br>
+                        <b>Z</b> Undo last V3 build tool<br>
+                        <b>Y</b> Manual Save<br>
+                        <b>H</b> Hide/Show this help<br><br>
+                        Same game. Bigger update. No sequel.
+                    `;
+                    document.body.appendChild(help);
+                }
+                if (!document.getElementById('vwz-v3-panel')) {
+                    const panel = document.createElement('div');
+                    panel.id = 'vwz-v3-panel';
+                    panel.className = 'vwz-v3-panel';
+                    document.body.appendChild(panel);
+                }
+            }
+
+            function v3Toast(text) {
+                const toast = document.getElementById('vwz-v3-toast');
+                if (!toast) return;
+                toast.textContent = text;
+                toast.style.display = 'block';
+                clearTimeout(VWZ_V3.toastTimer);
+                VWZ_V3.toastTimer = setTimeout(() => { toast.style.display = 'none'; }, 2200);
+            }
+
+            function v3SetWeather(index) {
+                VWZ_V3.weatherIndex = ((index % V3_WEATHER.length) + V3_WEATHER.length) % V3_WEATHER.length;
+                const name = V3_WEATHER[VWZ_V3.weatherIndex];
+                const overlay = document.getElementById('vwz-weather-overlay');
+                const rain = document.getElementById('vwz-rain-layer');
+                if (overlay) {
+                    overlay.className = name === 'Clear' ? 'clear' : name === 'Mist' ? 'mist' : name === 'Rain' ? 'rain' : name === 'Wind' ? 'wind' : name === 'Storm' ? 'storm' : 'glow';
+                }
+                if (rain) rain.style.display = (name === 'Rain' || name === 'Storm') ? 'block' : 'none';
+                if (typeof scene !== 'undefined' && scene && typeof THREE !== 'undefined') {
+                    if (name === 'Mist') scene.fog = new THREE.FogExp2(0xbfd7ff, 0.020);
+                    else if (name === 'Rain') scene.fog = new THREE.FogExp2(0x8ab6d6, 0.016);
+                    else if (name === 'Storm') scene.fog = new THREE.FogExp2(0x4b6380, 0.024);
+                    else if (name === 'Glow Night') scene.fog = new THREE.FogExp2(0x17123a, 0.014);
+                    else scene.fog = new THREE.FogExp2(0xb2d1ff, 0.012);
+                }
+                v3Save(false);
+                v3UpdatePanel();
+            }
+
+            function v3NextWeather() {
+                v3SetWeather(VWZ_V3.weatherIndex + 1);
+                v3Toast('Weather: ' + V3_WEATHER[VWZ_V3.weatherIndex]);
+            }
+
+            function v3NightLevel() {
+                let t = 0.25;
+                try { t = (typeof dayTime === 'number') ? dayTime : ((performance.now() / 140000) % 1); }
+                catch (err) { t = ((performance.now() / 140000) % 1); }
+                t = ((t % 1) + 1) % 1;
+                if (t > 0.58) return Math.min(1, (t - 0.58) / 0.24);
+                if (t < 0.16) return Math.min(1, (0.16 - t) / 0.16);
+                return 0;
+            }
+
+            function v3ActiveMission() {
+                return V3_MISSIONS[Math.min(VWZ_V3.missionIndex, V3_MISSIONS.length - 1)];
+            }
+
+            function v3MissionReady(mission) {
+                if (!mission) return false;
+                if (mission.id === 'survive_night') return VWZ_V3.nightSurvived;
+                if (mission.id === 'mission_cells') return v3Cells() >= 40;
+                if (mission.id === 'base_light') return v3Lights() >= 3;
+                if (mission.id === 'cave_scan') return VWZ_V3.caveScans >= 1;
+                if (mission.id === 'craft_master') return v3Crafted() >= 2;
+                if (mission.id === 'watchtower') return VWZ_V3.towersBuilt >= 1;
+                if (mission.id === 'path_builder') return VWZ_V3.pathsBuilt >= 3;
+                return false;
+            }
+
+            function v3MissionProgress(mission) {
+                if (!mission) return 'Done';
+                if (mission.id === 'survive_night') return VWZ_V3.nightSurvived ? 'Complete' : Math.floor(VWZ_V3.nightTicks / 60) + ' / 12 sec';
+                if (mission.id === 'mission_cells') return Math.min(v3Cells(), 40) + ' / 40 cells';
+                if (mission.id === 'base_light') return Math.min(v3Lights(), 3) + ' / 3 lights';
+                if (mission.id === 'cave_scan') return Math.min(VWZ_V3.caveScans, 1) + ' / 1 scan';
+                if (mission.id === 'craft_master') return Math.min(v3Crafted(), 2) + ' / 2 crafted';
+                if (mission.id === 'watchtower') return Math.min(VWZ_V3.towersBuilt, 1) + ' / 1 tower';
+                if (mission.id === 'path_builder') return Math.min(VWZ_V3.pathsBuilt, 3) + ' / 3 paths';
+                return 'Active';
+            }
+
+            function v3CheckMissions() {
+                const mission = v3ActiveMission();
+                if (mission && v3MissionReady(mission) && !VWZ_V3.completed.includes(mission.id)) {
+                    VWZ_V3.completed.push(mission.id);
+                    VWZ_V3.missionIndex = Math.min(VWZ_V3.missionIndex + 1, V3_MISSIONS.length - 1);
+                    v3Toast('Mission complete: ' + mission.name);
+                    v3Save(false);
+                }
+            }
+
+            function v3ToggleMissions() {
+                VWZ_V3.missionOpen = !VWZ_V3.missionOpen;
+                v3UpdateMissionBoard();
+            }
+
+            function v3UpdateMissionBoard() {
+                const board = document.getElementById('vwz-v3-missions');
+                if (!board) return;
+                board.style.display = VWZ_V3.missionOpen ? 'block' : 'none';
+                const mission = v3ActiveMission();
+                const done = VWZ_V3.completed.length;
+                board.innerHTML = `
+                    <h2>V3.0 Mission Board</h2>
+                    <div style="color:#fbbf24">Update 9 — Missions</div><br>
+                    Active: <span style="color:#a3e635">${mission.name}</span><br>
+                    Goal: ${mission.text}<br>
+                    Progress: <span style="color:#67e8f9">${v3MissionProgress(mission)}</span><br>
+                    Tip: <span style="color:#c4b5fd">${mission.tip}</span><br><br>
+                    Completed Missions: ${done} / ${V3_MISSIONS.length}<br>
+                    Cells: ${v3Cells()} • Crafted: ${v3Crafted()} • Lights: ${v3Lights()}<br><br>
+                    Press <b>J</b> to close.
+                `;
+            }
+
+            function v3ToggleHelp() {
+                VWZ_V3.helpOpen = !VWZ_V3.helpOpen;
+                const help = document.getElementById('vwz-v3-help');
+                if (help) help.style.display = VWZ_V3.helpOpen ? 'block' : 'none';
+            }
+
+            function v3ToggleBuildGuide() {
+                VWZ_V3.buildGuide = !VWZ_V3.buildGuide;
+                document.body.classList.toggle('vwz-build-guide-on', VWZ_V3.buildGuide);
+                v3Toast(VWZ_V3.buildGuide ? 'Build guide on' : 'Build guide off');
+            }
+
+            function v3GroundY(x, z) {
+                try { return Math.floor(terrain.getHeight(x, z)) + 1; }
+                catch (err) { return Math.floor(player.pos.y - 1); }
+            }
+
+            function v3PlaceTracked(x, y, z, type, batch) {
+                if (typeof setBlock !== 'function') return;
+                const ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z);
+                const old = getBlock(ix, iy, iz);
+                setBlock(ix, iy, iz, type, true);
+                if (batch) batch.push([ix, iy, iz, old]);
+                VWZ_V3.blocksPlaced += 1;
+            }
+
+            function v3BuildWatchtower() {
+                if (typeof player === 'undefined' || typeof setBlock !== 'function') return;
+                const T = BLOCK_TYPES || {};
+                const cx = Math.floor(player.pos.x + Math.sin(player.yaw || 0) * 5);
+                const cz = Math.floor(player.pos.z + Math.cos(player.yaw || 0) * 5);
+                const y = v3GroundY(cx, cz);
+                const batch = [];
+                const legType = T.WOOD || T.PLANKS || 6;
+                const floorType = T.PLANKS || T.BRICK || 7;
+                const glowType = T.CRYSTAL || T.GLASS || 9;
+                for (let h = 0; h <= 6; h++) {
+                    v3PlaceTracked(cx - 1, y + h, cz - 1, legType, batch);
+                    v3PlaceTracked(cx + 1, y + h, cz - 1, legType, batch);
+                    v3PlaceTracked(cx - 1, y + h, cz + 1, legType, batch);
+                    v3PlaceTracked(cx + 1, y + h, cz + 1, legType, batch);
+                }
+                for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) v3PlaceTracked(cx + x, y + 7, cz + z, floorType, batch);
+                for (let x = -2; x <= 2; x++) {
+                    v3PlaceTracked(cx + x, y + 8, cz - 2, glowType, batch);
+                    v3PlaceTracked(cx + x, y + 8, cz + 2, glowType, batch);
+                    v3PlaceTracked(cx - 2, y + 8, cz + x, glowType, batch);
+                    v3PlaceTracked(cx + 2, y + 8, cz + x, glowType, batch);
+                }
+                if (typeof THREE !== 'undefined' && scene) {
+                    const light = new THREE.PointLight(0x67e8f9, 0.9, 28);
+                    light.position.set(cx + 0.5, y + 9, cz + 0.5);
+                    scene.add(light);
+                }
+                VWZ_V3.undoStack.push(batch);
+                VWZ_V3.towersBuilt += 1;
+                updateChunks(true);
+                v3Save(false);
+                v3Toast('Watchtower built');
+            }
+
+            function v3LayPath() {
+                if (typeof player === 'undefined' || typeof setBlock !== 'function') return;
+                const T = BLOCK_TYPES || {};
+                const type = T.BRICK || T.PLANKS || 6;
+                const batch = [];
+                const dx = Math.round(Math.sin(player.yaw || 0));
+                const dz = Math.round(Math.cos(player.yaw || 0));
+                const sx = Math.floor(player.pos.x);
+                const sz = Math.floor(player.pos.z);
+                for (let i = 2; i <= 8; i++) {
+                    const x = sx + dx * i;
+                    const z = sz + dz * i;
+                    const y = v3GroundY(x, z);
+                    v3PlaceTracked(x, y, z, type, batch);
+                }
+                VWZ_V3.undoStack.push(batch);
+                VWZ_V3.pathsBuilt += 1;
+                updateChunks(true);
+                v3Save(false);
+                v3Toast('Path strip built');
+            }
+
+            function v3UndoBuild() {
+                const batch = VWZ_V3.undoStack.pop();
+                if (!batch || !batch.length) { v3Toast('Nothing to undo yet'); return; }
+                VWZ_V3.recordEdits = false;
+                batch.forEach(([x, y, z, oldType]) => setBlock(x, y, z, oldType, true));
+                VWZ_V3.recordEdits = true;
+                updateChunks(true);
+                v3Toast('Last V3 build undone');
+            }
+
+            function v3CaveScan() {
+                if (typeof player === 'undefined' || typeof THREE === 'undefined' || !scene) return;
+                const T = BLOCK_TYPES || {};
+                const px = Math.floor(player.pos.x);
+                const pz = Math.floor(player.pos.z);
+                const markerMat = new THREE.MeshBasicMaterial({ color: 0x67e8f9, transparent: true, opacity: .82 });
+                for (let i = 0; i < 4; i++) {
+                    const x = px + Math.floor((Math.random() - .5) * 24);
+                    const z = pz + Math.floor((Math.random() - .5) * 24);
+                    const y = Math.max(2, v3GroundY(x, z) - (3 + Math.floor(Math.random() * 7)));
+                    const mesh = new THREE.Mesh(new THREE.BoxGeometry(.45, .45, .45), markerMat);
+                    mesh.position.set(x + .5, y + .5, z + .5);
+                    scene.add(mesh);
+                    const light = new THREE.PointLight(0x67e8f9, .55, 10);
+                    light.position.copy(mesh.position);
+                    scene.add(light);
+                    VWZ_V3.caveSignals.push({ mesh, light, bob: Math.random() * 10 });
+                    if (typeof setBlock === 'function') {
+                        const type = T.CRYSTAL || T.GLASS || 9;
+                        setBlock(x, y, z, type, true);
+                    }
+                }
+                VWZ_V3.caveScans += 1;
+                v3Save(false);
+                v3Toast('Underground signals revealed');
+            }
+
+            function v3UpdateCaveSignals(delta) {
+                VWZ_V3.caveSignals.forEach(sig => {
+                    sig.bob += delta * 3;
+                    if (sig.mesh) {
+                        sig.mesh.rotation.y += delta * 1.5;
+                        sig.mesh.position.y += Math.sin(sig.bob) * 0.0018;
+                    }
+                    if (sig.light && sig.mesh) sig.light.position.copy(sig.mesh.position);
+                });
+            }
+
+            function v3ApplyWorldEdits() {
+                if (typeof setBlock !== 'function') return;
+                const entries = Object.entries(VWZ_V3.worldEdits || {});
+                if (!entries.length) return;
+                VWZ_V3.recordEdits = false;
+                entries.slice(-2500).forEach(([key, type]) => {
+                    const [x, y, z] = key.split(',').map(Number);
+                    if (Number.isFinite(x) && Number.isFinite(y) && Number.isFinite(z)) setBlock(x, y, z, type, true);
+                });
+                VWZ_V3.recordEdits = true;
+                if (typeof updateChunks === 'function') updateChunks(true);
+                v3Toast('Saved world edits loaded');
+            }
+
+            function v3UpdatePanel() {
+                const panel = document.getElementById('vwz-v3-panel');
+                if (!panel) return;
+                const mission = v3ActiveMission();
+                const night = Math.round(v3NightLevel() * 100);
+                panel.innerHTML = `
+                    <strong>VOXELWORLD ZERO V3.0</strong><br>
+                    <span class="hot">Updates 8-14 Mega Update</span><br>
+                    Weather: <span class="sky">${V3_WEATHER[VWZ_V3.weatherIndex]}</span> • Night: <span class="sky">${night}%</span><br>
+                    Mission: <span class="hot">${mission.name}</span><br>
+                    ${v3MissionProgress(mission)}<br>
+                    Cave scans: ${VWZ_V3.caveScans} • Towers: ${VWZ_V3.towersBuilt} • Paths: ${VWZ_V3.pathsBuilt}<br>
+                    Saves: ${VWZ_V3.manualSaves} • World edits: ${Object.keys(VWZ_V3.worldEdits || {}).length}<br>
+                    <button onclick="VWZ_V3.ui('mission')">J Missions</button>
+                    <button onclick="VWZ_V3.ui('weather')">U Weather</button>
+                    <button onclick="VWZ_V3.ui('save')">Y Save</button>
+                    <button onclick="VWZ_V3.ui('help')">H Help</button>
+                `;
+                v3UpdateMissionBoard();
+            }
+
+            VWZ_V3.ui = function(action) {
+                if (action === 'mission') v3ToggleMissions();
+                if (action === 'weather') v3NextWeather();
+                if (action === 'save') v3Save(true);
+                if (action === 'help') v3ToggleHelp();
+            };
+
+            const v3OldSetBlock = (typeof setBlock === 'function') ? setBlock : null;
+            if (v3OldSetBlock) {
+                setBlock = function(x, y, z, type, updateImmediate = true) {
+                    const result = v3OldSetBlock(x, y, z, type, updateImmediate);
+                    if (VWZ_V3.ready && VWZ_V3.recordEdits) {
+                        const ix = Math.floor(x), iy = Math.floor(y), iz = Math.floor(z);
+                        VWZ_V3.worldEdits[`${ix},${iy},${iz}`] = type;
+                        const keys = Object.keys(VWZ_V3.worldEdits);
+                        if (keys.length > 2500) delete VWZ_V3.worldEdits[keys[0]];
+                    }
+                    return result;
+                };
+            }
+
+            const v3OldSpawnBlockPickup = (typeof spawnBlockPickup === 'function') ? spawnBlockPickup : null;
+            if (v3OldSpawnBlockPickup) {
+                spawnBlockPickup = function(x, y, z, blockType) {
+                    VWZ_V3.blocksPlaced = Math.max(0, VWZ_V3.blocksPlaced);
+                    return v3OldSpawnBlockPickup(x, y, z, blockType);
+                };
+            }
+
+            const v3OldInit = init;
+            init = function() {
+                v3AddStyle();
+                v3SafeLoad();
+                v3OldInit();
+                setTimeout(() => {
+                    document.title = 'VoxelWorld Zero - Mega Survival Expansion V3.0';
+                    const build = document.querySelector('#menu-overlay .text-\[9px\]');
+                    if (build) build.textContent = 'VOXELWORLD ZERO V3.0';
+                    const splash = document.querySelector('.splash-text');
+                    if (splash) splash.textContent = 'UPDATES 8-14 MEGA!';
+                    const subtitle = document.querySelector('#menu-overlay p');
+                    if (subtitle) subtitle.textContent = 'Day/Night Survival • Missions • Weather • Underground Signals • Building Tools';
+                    const start = document.getElementById('btn-start');
+                    if (start) start.textContent = 'Enter VoxelWorld Zero V3.0';
+                    v3CreateDom();
+                    v3SetWeather(VWZ_V3.weatherIndex);
+                    v3ApplyWorldEdits();
+                    VWZ_V3.ready = true;
+                    v3UpdatePanel();
+                    v3Toast('V3.0 Updates 8-14 loaded');
+                }, 0);
+            };
+
+            const v3OldAnimate = animate;
+            animate = function() {
+                const delta = 0.016;
+                if (VWZ_V3.ready) {
+                    VWZ_V3.weatherTimer += delta;
+                    if (VWZ_V3.weatherTimer > 90) {
+                        VWZ_V3.weatherTimer = 0;
+                        v3SetWeather(VWZ_V3.weatherIndex + 1);
+                    }
+                    const night = v3NightLevel();
+                    if (night > .55) {
+                        VWZ_V3.nightTicks += 1;
+                        if (VWZ_V3.nightTicks > 720) VWZ_V3.nightSurvived = true;
+                    }
+                    v3UpdateCaveSignals(delta);
+                    v3CheckMissions();
+                    if (performance.now() - VWZ_V3.lastAutosave > 30000) {
+                        VWZ_V3.lastAutosave = performance.now();
+                        v3Save(false);
+                    }
+                    if (Math.random() < .025) v3UpdatePanel();
+                }
+                v3OldAnimate();
+            };
+
+            window.addEventListener('keydown', (e) => {
+                const tag = (document.activeElement && document.activeElement.tagName || '').toLowerCase();
+                if (tag === 'input' || tag === 'textarea') return;
+                const k = e.key.toLowerCase();
+                if (k === 'j') v3ToggleMissions();
+                if (k === 'u') v3NextWeather();
+                if (k === 'c') v3CaveScan();
+                if (k === 'x') v3BuildWatchtower();
+                if (k === 't') v3LayPath();
+                if (k === 'z') v3UndoBuild();
+                if (k === 'g') v3ToggleBuildGuide();
+                if (k === 'y') v3Save(true);
+                if (k === 'h') v3ToggleHelp();
+            });
+        })();
+
 
 
         window.onload = function() {
